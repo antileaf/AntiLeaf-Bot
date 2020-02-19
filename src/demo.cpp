@@ -861,6 +861,8 @@ namespace enabled_functions {
 		{{"爬", "给爷爬", "爪巴", "给爷爪巴"}, {"你怎么能让可爱的我爬呢，你坏坏QAQ"}},
 		{{"AntiLeaf", "antileaf", "绿鸽鸽", "绿哥哥"}, {"绿鸽鸽好帅，最喜欢他了！QwQ"}},
 		{{"呐呐", "呐呐呐", "呐 呐", "呐 呐 呐"}, {"自 动 声 呐 系 统", "巧了我也是二次元[CQ:face,id=109]"}},
+		{{"Bot", "bot", "BOT", "⑨"}, {"这里是绿鸽鸽的可爱Bot哦~"}},
+		{{"复读", "复读机", "复读姬"}, {"小火汁，原来你也是复读机？"}},
 	};
 
 	vector<pair<pair<string, string>, pair<string, string>>> single_para = { // 单参数命令
@@ -870,7 +872,7 @@ namespace enabled_functions {
 
 	vector<pair<vector<string>, vector<string>>> dear = { // 贴贴
 		{{"亲亲", "\\[CQ:face,id=109\\]"},{"[CQ:face,id=109][CQ:face,id=109][CQ:face,id=109]"}},
-		{{"贴贴"}, {"绿鸽鸽好帅，我和绿鸽鸽贴贴[CQ:face,id=109][CQ:face,id=109]"}},
+		{{"贴贴"}, {"绿鸽鸽好帅，我和绿鸽鸽贴贴[CQ:face,id=109][CQ:face,id=109]", "阿姨洗铁路哟~[CQ:face,id=109]"}},
 		{{"说几句好听的", "说两句好听的", "来两句好听的", "来几句好听的", "来句好听的", "说句好听的"}, {"绿鸽鸽最帅了[CQ:face,id=109]", "我最喜欢绿鸽鸽了[CQ:face,id=109]", "绿鸽鸽帅帅！[CQ:face,id=109]"}},
 		{{"卖个萌", "来卖个萌", "卖萌", "qwq", "qwqwq"}, {"[CQ:face,id=111][CQ:face,id=111][CQ:face,id=111]", "QwQ", "别嘛~~人家要害羞了啦~~"}},
 	};
