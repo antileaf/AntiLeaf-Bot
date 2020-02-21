@@ -67,6 +67,11 @@ namespace string_tools {
 		return s.size() >= t.size() && s.rfind(t) == s.size() - t.size();
 	}
 
+	void length_check(string &s) {
+		if ((int)s.size() > 200)
+			s = s.substr(0, 200) + "\n……\n（过长部分已截断，共" + to_string(s.size()) + "字节）";
+	}
+
 	pair<string, string> split(const string &s, const string &t = " ") { // 从第一个t处把s分成两半，不保留t
 		int i = s.find(t);
 		if (i == string::npos)
@@ -135,10 +140,13 @@ namespace string_tools {
 
 namespace message_tools { // 发消息工具
 
+	using namespace string_tools;
+
 	const int MAX_TRIES = 5;
 	// const int DELAY = 500;
 
 	void send_message(int64_t user_id, string s) {
+		length_check(s);
 		for (int k = 0; k < MAX_TRIES; k++) {
 			try {
 				send_message(Target::user(user_id), s);
@@ -153,6 +161,7 @@ namespace message_tools { // 发消息工具
 	}
 
 	void send_group_message(int64_t group_id, string s) {
+		length_check(s);
 		for (int k = 0; k < MAX_TRIES; k++) {
 			try {
 				cq::send_group_message(group_id, s);
@@ -247,7 +256,7 @@ namespace checker_and_handler {
 	class checker {
 
 	protected:
-		bool is_finally = true; // 是否在识别为该类型指令后截断，默认为真，目前尚未启用
+		bool is_finally = true; // 是否在识别为该类型指令后break，默认为真，目前尚未启用
 
 	public:
 		checker() = default;
@@ -600,21 +609,62 @@ namespace checker_and_handler {
 		~python_reply() = default;
 
 		string reply(const GroupMessageEvent &e) {
-			bool auth = false;
-			for (auto o : ENABLED_USERS)
-				auth |= (o == e.user_id);
-			if (!auth)
-				return "珍爱绿鸽鸽的电脑，不要再拿我开涮了！QAQ";
-			
-			ofstream g("temp.txt");
-			g << e.message;
+			string s = e.message, name = to_string(e.message_id);
+			erase_pre(s);
+
+			ofstream g(name + ".py");
+			g << "# -*- coding: utf-8 -*- \n" + s;
 			g.close();
-			system("python eval.pyw < temp.txt > output.txt");
-			ifstream f("output.txt");
+			if (system(("python " + name + ".py > " + name + ".txt").c_str())) {
+				system(("del " + name + ".py").c_str());
+				system(("del " + name + ".txt").c_str());
+				return "运行时出错";
+			}
+
+			ifstream f(name + ".txt");
 			ostringstream os;
 			os << f.rdbuf();
 			f.close();
-			return os.str(); // TODO : 这里写的好丑，有空改一下
+
+			system(("del " + name + ".py").c_str());
+			system(("del " + name + ".txt").c_str());
+			return os.str();
+		}
+	};
+
+	class cpp_reply final : public custom_reply { // C++功能
+		
+	public:
+		cpp_reply(bool at = false) : custom_reply(at) {}
+
+		~cpp_reply() = default;
+
+		string reply(const GroupMessageEvent &e) {
+			string s = e.message, name = to_string(e.message_id);
+			erase_pre(s);
+
+			ofstream g(name + ".cpp");
+			g << s;
+			g.close();
+			if (system(("g++ " + name + ".cpp -std=c++17 -o " + name).c_str())) {
+				system(("del " + name + ".cpp").c_str());
+				return "编译失败";
+			}
+			if (system((name + " > " + name + ".txt").c_str())) {
+				system(("del " + name + ".cpp").c_str());
+				system(("del " + name + ".exe").c_str());
+				system(("del " + name + ".txt").c_str());
+				return "运行时出错";
+			}
+
+			ifstream f(name + ".txt");
+			ostringstream os;
+			os << f.rdbuf();
+			f.close();
+
+			system(("del " + name + ".exe").c_str());
+			system(("del " + name + ".txt").c_str());
+			return os.str();
 		}
 	};
 
@@ -655,8 +705,6 @@ namespace checker_and_handler {
 		~collection_reply() {}
 
 		string reply(const GroupMessageEvent &e) {
-			// logging::info("??", "232323");
-			// return "有毒吧啊啊啊啊啊啊";
 			string s = e.message;
 			erase_pre(s);
 			bool auth = false;
@@ -810,6 +858,10 @@ namespace enabled_functions {
 
 	vector<pair<checker*, handler*>> functions;
 
+	vector<pair<vector<string>, string>> usage = { // 用法帮助
+		{{"直播", "查房"}, "%直播+你要查询的群友常用名称"},
+	};
+
 	vector<pair<vector<string>, string>> websites = { // 常用网站
 		{{"百度", "百度搜索", "baidu"}, "www.baidu.com"},
 		{{"谷歌", "google", "Google", "谷歌搜索"}, "www.google.com"},
@@ -825,7 +877,7 @@ namespace enabled_functions {
 		{{"atcoder", "Atcoder", "AtCoder"}, "atcoder.jp"},
 		{{"Pixiv", "P站", "p站", "pixiv", "PIXIV"}, "www.pixiv.net （不要看人家的本子嘛~[CQ:face,id=111]）"},
 		{{"atcoder", "Atcoder", "AtCoder"}, "atcoder.jp"},
-		{{"Pornhub", "pornhub", "PornHub", "P\\*\\**Hub", "P\\*\\**hub", "p\\*\\**hub", "\\*\\**hub", "\\*\\**Hub", "\\*\\**HUB"}, "\n[CQ:face,id=26]咿，你要看什么奇怪的网站，是不是想看我的本子！太可怕了QAQ"},
+		{{"Pornhub", "pornhub", "PornHub", "P\\*\\**Hub", "P\\*\\**hub", "p\\*\\**hub", "\\*\\**hub", "\\*\\**Hub", "\\*\\**HUB"}, "\n[CQ:face,id=26]你要看什么奇怪的网站，太可怕了QAQ"},
 		{{"Vijos", "vijos", "VIJOS"}, "vijos.org"},
 		{{"bzoj", "Bzoj", "BZOJ", "LYDSY", "lydsy", "八中oj", "八中OJ", "板子OJ", "板子oj"}, "www.lydsy.com"},
 		{{"GitHub", "Github", "github", "gayhub", "GayHub", "Gayhub"}, "github.com"},
@@ -850,11 +902,22 @@ namespace enabled_functions {
 		{{"北啻", "北帝口"}, "live.bilibili.com/152745"},
 		{{"Ringoer", "ringoer"}, "live.bilibili.com/706938"},
 		{{"Kamigen", "kamigen"}, "live.bilibili.com/9508073"},
-		{{"Pantw", "pantw", "PTW", "Ptw", "ptw", "群主"}, "live.bilibili.com/4299357"},
+		{{"Pantw", "pantw", "PTW", "Ptw", "ptw", "群主", "葡萄味"}, "live.bilibili.com/4299357"},
 		{{"MegaOwler", "Megaowler", "megaowler", "百万猫头鹰"}, "live.bilibili.com/917033"},
 		{{"Slanterns", "SLanterns", "slanterns", "slantern", "Slantern"}, "live.bilibili.com/627355"},
 		{{"Democracy", "democracy"}, "live.bilibili.com/4620643"},
 		{{"icy", "Icy", "绿泡泡", "ICY"}, "live.bilibili.com/8815853"},
+
+		{{"夏色祭", "夏哥", "祭妹", "matsuri", "Matsuri", "祭", "夏色まつり", "まつり", "马自立"}, "live.bilibili.com/13946381"},
+		{{"白上吹雪", "小狐狸", "屑狐狸", "FBK", "Fubuki", "fbk", "fbk", "吹雪", "白上フブキ", "フブキ"}, "live.bilibili.com/11588230"},
+		{{"神楽Mea", "mea", "Mea", "屑女仆", "神乐mea", "神乐Mea", "神楽mea"}, "live.bilibili.com/12235923"},
+		{{"神乐七奈", "かぐらなな", "狗妈", "神楽七奈", "神乐花菜", "神楽花菜", "猫妈", "妈妈"}, "live.bilibili.com/21304638"},
+		{{"百鬼绫目", "百鬼あやめ", "あやめ"}, "live.bilibili.com/21130785"},
+		{{"赤井心", "心心", "はあと", "赤井"}, "live.bilibili.com/14275133"},
+		{{"凑阿库娅", "凑-阿库娅", "湊あくあ", "aqua", "Aqua", "阿夸", "阿库娅"}, "live.bilibili.com/14917277"},
+		{{"天音彼方", "天音", "Kana碳", "天音かなた", "Kanata", "kanata"}, "live.bilibili.com/21752681"},
+		{{"润羽露西娅", "露西亚", "露西娅", "Rushia"}, "live.bilibili.com/21545232"},
+
 	};
 
 	vector<pair<vector<string>, vector<string>>> conver = { // 对话
@@ -942,6 +1005,9 @@ namespace enabled_functions {
 
 		for (auto s : {"Python", "python", "py", "Py"})
 			add_function(presuf_match(s, ""), order_reply(single_para_reply(s, "", "", ""), python_reply(false), true)); // Python
+
+		for (auto s : {"C\\+\\+", "c\\+\\+", "cpp", "CPP", "c艹", "C艹"})
+			add_function(presuf_match(s, ""), order_reply(single_para_reply(s, "", "", ""), cpp_reply(false), true)); // C++
 
 		for (auto p : dear)
 			for (auto o : p.first)
