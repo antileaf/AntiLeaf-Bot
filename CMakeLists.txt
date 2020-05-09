@@ -7,7 +7,7 @@ include_directories(src) # 设置 src 目录为包含目录, 可根据实际情�
 include_directories(extern/cqcppsdk/include) # 设置 SDK 的 include 目录为包含目录, 必须
 
 include(extern/cqcppsdk/cqcppsdk.cmake) # 包含 SDK 的 CMake 脚本, 必须
-file(GLOB_RECURSE SOURCE_FILES src/demo.cpp) # 递归搜索 src 目录中的源文件, 可根据实际情况修改
+file(GLOB_RECURSE SOURCE_FILES src/main.cpp) # 递归搜索 src 目录中的源文件, 可根据实际情况修改
 
 # 从 app_id.txt 文件读取 app id, 也可以直接设置
 file(READ "app_id.txt" APP_ID)
