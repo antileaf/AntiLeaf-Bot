@@ -224,8 +224,6 @@ namespace checker_and_handler {
 				t += o->reply(e, u);
 			}
 
-			if (at)
-				t = ::at(u.user_id.value()) + t;
 			return t;
 		}
 	};
@@ -246,8 +244,6 @@ namespace checker_and_handler {
 				e.message = o->reply(e, u);
 				// logging::info("debug", e.message);
 			}
-			if (at)
-				e.message = ::at(u.user_id.value()) + " " + e.message;
 
 			return e.message;
 		}
@@ -264,9 +260,7 @@ namespace checker_and_handler {
 		~private_fixed_reply() = default;
 
 		string reply(const MessageEvent &e, const Target &u) {
-			if (at)
-				return ::at(u.user_id.value()) + " " + s;
-			else return s;
+			return s;
 		}
 	};
 
@@ -282,8 +276,6 @@ namespace checker_and_handler {
 
 		string reply(const MessageEvent &e, const Target &u) {
 			string t = v[gen() % v.size()];
-			if (at)
-				t = ::at(u.user_id.value()) + " " + t;
 			return t;
 		}
 	};

@@ -24,7 +24,6 @@ Bot v1.0  By AntiLeaf\n\
 直播查询         直播 + 你想查询的群友常用id\n\
 随机查房         随机查房\n\
 随机看vtb        DD\n\
-（网站列表与直播间列表请联系绿鸽鸽或ks提供）\n\
 百度 / 谷歌搜索  百度 / 谷歌一下 + 你想搜索的东西\n\
 ")
 #ifdef RUNCODE_HPP
@@ -39,17 +38,14 @@ OEIS               oeis / OEIS + 你想搜索的东西\n\
 #endif
 	+ "\
 输出            echo / 输出 + 你想输出的东西\n\
-贴贴            只有绿鸽鸽钦定的人才能使用\n\
 帮助            help / 帮助\n\
-反馈            反馈 / report + 你想反馈给绿鸽鸽的东西\n\
+反馈            反馈 / report + 你想反馈给作者的东西\n\
 诗词收集         诗词 + 内容\n\
 （添加 + 诗词：添加句子 存档：保存已收集诗词\n\
 加载：读取已存档的诗词 无内容：随机返回已收集诗词）\n\
 "
 #ifdef BAN_HPP
-	+ "\
-禁言            禁言 + 分钟数（好好学习吧！）\n\
-"
+	+ "禁言            禁言 + 分钟数（好好学习吧！）\n"
 #endif
 	+ "\
 最近更新：Bot大重构，添加私聊功能框架，添加反馈功能\n\
@@ -85,7 +81,7 @@ OEIS               oeis / OEIS + 你想搜索的东西\n\
 输出            echo / 输出 + 你想输出的东西\n\
 贴贴            请你吃桃子\n\
 帮助            help / 帮助\n\
-反馈            反馈 / report + 你想反馈给绿鸽鸽的东西\n\
+反馈            反馈 / report + 你想反馈给作者的东西\n\
 诗词收集         诗词 + 内容\n\
 （添加 + 诗词：添加句子 存档：保存已收集诗词\n\
 加载：读取已存档的诗词 无内容：随机返回已收集诗词）\n\
@@ -105,7 +101,7 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 	{ { "京东", "jd", "JD", "二手东" }, "www.jd.com" },
 	{ { "b站", "哔哩哔哩", "bilibili" }, "www.bilibili.com" },
 	{ { "oeis", "OEIS" }, "oeis.org" },
-	{ { "op.gg", "OP.GG" }, "op.gg" },
+	{ { "op.gg", "OP.GG", "opgg", "OPGG" }, "op.gg" },
 	{ { "cf", "CF", "codeforce", "codeforces" }, "codeforces.com" },
 	{ { "UOJ", "uoj", "Universal OJ", "universal oj", "universal OJ" }, "uoj.ac" },
 	{ { "LOJ", "loj", "Loj", "LibreOJ", "Libreoj", "libreoj" }, "loj.ac" },
@@ -144,14 +140,14 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 		{{"icy", "Icy", "绿泡泡", "ICY"}, "live.bilibili.com/8815853"},
 	}, DD = {
 		{{"夏色祭", "夏哥", "祭妹", "matsuri", "Matsuri", "祭", "夏色まつり", "まつり", "马自立"}, "live.bilibili.com/13946381"},
-		{{"白上吹雪", "小狐狸", "屑狐狸", "FBK", "Fubuki", "fbk", "fubuki", "吹雪", "白上フブキ", "フブキ", "kon", "konkon"}, "live.bilibili.com/11588230"},
+		{{"白上吹雪", "小狐狸", "屑狐狸", "FBK", "Fubuki", "fbk", "fubuki", "吹雪", "白上フブキ", "フブキ", "kon", "konkon", "狐狸", "屑猫咪", "猫咪"}, "live.bilibili.com/11588230"},
 		{{"神楽Mea", "mea", "Mea", "屑女仆", "神乐mea", "神乐Mea", "神楽mea", "咩啊"}, "live.bilibili.com/12235923"},
-		{{"神乐七奈", "かぐらなな", "狗妈", "神楽七奈", "神乐花菜", "神楽花菜", "猫妈", "妈妈"}, "live.bilibili.com/21304638"},
+		{{"神乐七奈", "かぐらなな", "狗妈", "神楽七奈", "神乐花菜", "神楽花菜", "奈奈", "妈妈"}, "live.bilibili.com/21304638"},
 		{{"百鬼绫目", "百鬼あやめ", "あやめ", "狗狗"}, "live.bilibili.com/21130785"},
 		{{"赤井心", "心心", "はあと", "赤井", "心"}, "live.bilibili.com/14275133"},
-		{{"凑阿库娅", "凑-阿库娅", "湊あくあ", "aqua", "Aqua", "凑阿夸", "傻夸", "阿夸", "阿库娅"}, "live.bilibili.com/14917277"},
+		{{"凑阿库娅", "凑-阿库娅", "湊あくあ", "aqua", "Aqua", "夸宝", "夸", "洋葱", "凑阿夸", "傻夸", "阿夸", "阿库娅"}, "live.bilibili.com/14917277"},
 		{{"天音彼方", "天音", "Kana碳", "天音碳", "天音かなた", "Kanata", "kanata"}, "live.bilibili.com/21752681"},
-		{{"润羽露西娅", "露西亚", "露西娅", "Rushia", "砧板"}, "live.bilibili.com/21545232"},
+		{{"润羽露西娅", "露西亚", "露西娅", "Rushia", "砧板", "粽子", "绿粽子"}, "live.bilibili.com/21545232"},
 		{{ "花丸晴琉", "花丸はれる", "花丸", "hanamaru"}, "live.bilibili.com/21547895"},
 		{{"鹿乃", "kano"}, "live.bilibili.com/21547895"},
 		{{"野々宮ののの", "野野宫ののの", "ののの", "nonono", "nonomiya"}, "live.bilibili.com/21671418"},
@@ -174,7 +170,7 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 
 	vector<pair<vector<string>, vector<string>>> dear = { // 贴贴
 		{{"亲亲", "\\[CQ:face,id=109\\]"}, {"[CQ:face,id=109][CQ:face,id=109][CQ:face,id=109]"}},
-		{{"贴贴" }, {"绿鸽鸽好帅，我和绿鸽鸽贴贴[CQ:face,id=109][CQ:face,id=109]", "阿姨洗铁路哟~[CQ:face,id=109]"}},
+		{{"贴贴" }, {/*"绿鸽鸽好帅，我和绿鸽鸽贴贴[CQ:face,id=109][CQ:face,id=109]", */"愛してるよ~[CQ:face,id=109]", "ちあおにま~~~~"}},
 		{{"说几句好听的", "说两句好听的", "来两句好听的", "来几句好听的", "来句好听的", "说句好听的" }, { "绿鸽鸽最帅了[CQ:face,id=109]", "我最喜欢绿鸽鸽了[CQ:face,id=109]", "绿鸽鸽帅帅！[CQ:face,id=109]"}},
 		{{"卖个萌", "来卖个萌", "卖萌", "qwq", "qwqwq"}, {"[CQ:face,id=111][CQ:face,id=111][CQ:face,id=111]", "QwQ", "喵喵喵"}},
 	};
@@ -251,7 +247,7 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 			s += "\n" + p.first[0] + " : " + p.second;
 		add_group_function(group_and_check(group_user_id_check(1094054222), group_complete_match("vtb列表")), group_fixed_reply(s, false)); // DD列表
 
-		for (string s : {"扑克牌", "扑克", "纸牌", "poker", "Poker", "牌", "发牌"})
+		for (string s : {"扑克牌", "扑克", "纸牌", "poker", "Poker", "牌", "发牌", "赌怪", "土块"})
 			add_group_function(group_complete_match(s + " *"), group_random_reply(poker_deck, true)); // 发牌员来张牌
 
 		for (auto p : conver)
@@ -293,6 +289,9 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 
 		add_group_function(group_presuf_match("诗词", ""), group_order_reply(group_single_para_reply("诗词", "", "", ""), group_collection_reply(collections::poems), true)); // 诗词收集
 
+		for (string s : {"猴子", "耍猴", "猴", "文明观猴"})
+			add_group_function(group_presuf_match(s, ""), group_order_reply(group_single_para_reply(s, "", "", ""), group_collection_reply(collections::monkey), true)); // 耍猴
+
 #endif
 
 #ifdef WORM_HPP
@@ -308,6 +307,13 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 
 #endif
 
+#ifdef DEVINE_HPP
+
+		for (string s : {"占卜", "今日运势", "运势"})
+			add_group_function(group_complete_match(s), group_devine_reply());
+
+#endif
+
 		add_group_function(group_repeater_check(), group_repeater_reply()); // 复读机
 
 		for (string s : {"反馈", "report"})
@@ -315,7 +321,7 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 
 		// TODO : 添加更多功能
 
-		add_group_function(group_presuf_match(""), group_fixed_reply("不好意思，人家现在还听不懂哦~[CQ:face,id=111]\n如有需要可以联系绿鸽鸽添加相关功能~[CQ:face,id=111]", true)); // 没听懂
+		add_group_function(group_presuf_match(""), group_fixed_reply("不好意思，人家现在还听不懂哦~[CQ:face,id=111]\n如有需要可以联系作者添加相关功能~[CQ:face,id=111]", true)); // 没听懂
 	}
 
 #define add_private_function(a, b) private_functions.push_back(make_pair((new a), (new b)))
@@ -385,10 +391,10 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 #ifdef RUNCODE_HPP
 
 		for (auto s : { "Python", "python", "py", "Py" })
-			add_private_function(private_presuf_match(s, ""), private_order_reply(private_single_para_reply(s, "", "", ""), private_python_reply(false))); // Python
+			add_private_function(private_presuf_match(s, ""), private_order_reply(private_single_para_reply(s, "", "", ""), private_python_reply())); // Python
 
 		for (auto s : { "C\\+\\+", "c\\+\\+", "cpp", "CPP", "c艹", "C艹" })
-			add_private_function(private_presuf_match(s, ""), private_order_reply(private_single_para_reply(s, "", "", ""), private_cpp_reply(false))); // C++
+			add_private_function(private_presuf_match(s, ""), private_order_reply(private_single_para_reply(s, "", "", ""), private_cpp_reply())); // C++
 
 #endif
 
@@ -420,11 +426,25 @@ GitHub仓库：https://github.com/AntiLeaf/AntiLeaf-Bot\n\
 		for (string s : {"反馈", "report"})
 			add_private_function(private_presuf_match(s, ""), private_order_reply(private_single_para_reply(s, "", "", ""), private_report_reply(), true));
 
+#ifdef BAN_HPP
+
+		for (string s : {"解除禁言", "解禁"})
+			add_private_function(private_complete_match(s), private_repent_reply());
+
+#endif
+
+#ifdef DEVINE_HPP
+
+		for (string s : {"占卜", "今日运势", "运势"})
+			add_private_function(private_complete_match(s), private_devine_reply());
+
+#endif
+
 		// TODO : 添加更多功能
 
 		add_private_function(private_presuf_match(PREF, ""), private_fixed_reply("私聊请不要添加 % 符号哦~")); // 别加%了
 
-		add_private_function(private_presuf_match(""), private_fixed_reply("不好意思，人家现在还听不懂哦~[CQ:face,id=111]\n如有需要可以联系绿鸽鸽添加相关功能~[CQ:face,id=111]")); // 没听懂
+		add_private_function(private_presuf_match(""), private_fixed_reply("不好意思，人家现在还听不懂哦~[CQ:face,id=111]\n如有需要可以联系作者添加相关功能~[CQ:face,id=111]")); // 没听懂
 	}
 
 }

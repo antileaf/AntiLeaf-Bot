@@ -28,7 +28,7 @@ namespace definations {
 	class charactor {
 
 	protected:
-		int order;
+		int order, id_voted;
 		TYPE type, public_type;
 		bool dead;
 
@@ -58,9 +58,9 @@ namespace definations {
 
 		virtual bool check() const = 0; // 被预言家查验，true为好人，false为坏人
 
-		virtual bool check_ability() const = 0;
+		// virtual bool check_ability() const = 0;
 
-		virtual void ability() const = 0;
+		virtual void act() const = 0;
 	};
 
 	class villager final : public charactor {
@@ -81,8 +81,11 @@ namespace definations {
 
 	class seer final : public charactor {
 		
+	protected:
+		int id_chosen;
+		
 	public:
-		seer() : charactor() {}
+		seer() : charactor(), id_chosen(0) {}
 
 		~seer() = default;
 
@@ -93,15 +96,20 @@ namespace definations {
 		bool check() {
 			return true; // 问题是哪个预言家会查自己啊？
 		}
+
+		void act() {
+			// TODO：大哥翻谁的牌？
+		}
 	};
 
 	class witch final : public charactor {
 		
 	protected:
-		bool poison_used, antidote_used; // 女巫的两瓶药 
+		bool poison_used, antidote_used; // 女巫的两瓶药
+		int id_poisnoed, id_saved;
 
 	public:
-		witch() : charactor() , poison_used(false), antidote_used(false) {}
+		witch() : charactor() , poison_used(false), antidote_used(false), id_poisoned(0), id_saved(0) {}
 
 		~witch() = default;
 
@@ -111,6 +119,10 @@ namespace definations {
 
 		bool check() const {
 			return true;
+		}
+
+		void act() {
+			// TODO：大哥打谁？
 		}
 	};
 
@@ -128,17 +140,22 @@ namespace definations {
 			else {
 				// TODO：小老弟你被毒了
 			}
+			dead = true;
 		}
 
 		bool check() const {
 			return true;
+		}
+
+		void act() {
+			//TODO：看看你是不是被毒了
 		}
 	};
 
 	class fool final : public charactor {
 		
 	protected:
-		bool voted; // 是否已翻牌
+		bool declared; // 是否已翻牌
 
 	public:
 		fool() : charactor(), voted(false) {}
@@ -149,9 +166,22 @@ namespace definations {
 			if (t == VOTED) {
 				// TODO：青春期中二病白神也想翻牌
 			}
+			else dead = true;
+		}
+
+		bool check() const{
+			return true;
 		}
 	};
 
+	class guardian final : public charactor {
+
+	protected:
+		int id_protected;
+
+	public:
+		guardian() : charactor(), id_protected(0) {}
+	};
 }
 
 #endif

@@ -12,9 +12,9 @@ class python_reply : virtual public custom_reply { // Python
 public:
 	python_reply() : custom_reply() {}
 
-	virtual ~python_reply() = default;
+	virtual ~python_reply() = 0 {};
 
-	virtual string reply(const MessageEvent& e) = 0;
+	virtual string reply(const MessageEvent&, const Target&) = 0;
 };
 
 class group_python_reply final : public group_custom_reply, public python_reply { // Python功能
@@ -55,7 +55,7 @@ public:
 
 	~private_python_reply() = default;
 
-	string reply(const MessageEvent& e) {
+	string reply(const MessageEvent &e, const Target &u) {
 		string s = e.message, name = to_string(e.message_id);
 		erase_pre(s);
 
@@ -86,7 +86,7 @@ class cpp_reply : virtual public custom_reply { // C++
 public:
 	cpp_reply() : custom_reply() {}
 
-	virtual ~cpp_reply() = default;
+	virtual ~cpp_reply() = 0 {};
 
 	virtual string reply(const MessageEvent &e, const Target &u) = 0;
 };
@@ -130,7 +130,7 @@ public:
 class private_cpp_reply final : public private_custom_reply, public cpp_reply { // 
 
 public:
-	private_cpp_reply() : custom_reply() {}
+	private_cpp_reply() : private_custom_reply(), cpp_reply() {}
 
 	~private_cpp_reply() = default;
 

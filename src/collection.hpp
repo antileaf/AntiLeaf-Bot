@@ -34,7 +34,19 @@ namespace collections {
 				if (s == t)
 					return "已经添加过了哦~";
 			v.push_back(s);
+			save();
 			return "添加成功"; // 添加成功
+		}
+
+		string erase(const string &s) {
+			auto i = find(v.begin(), v.end(), s);
+			if (i == v.end())
+				return "找不到\"" + s + "\"哦~";
+			else {
+				v.erase(i);
+				save();
+				return "删除成功";
+			}
 		}
 
 		string load() {
@@ -60,17 +72,24 @@ namespace collections {
 				ofstream f(cq_path + file_name + ".txt");
 				f << s;
 				f.close();
-				return "存档成功";
+				return "";
 			}
 			catch (...) {
 				return "存档失败，检查一下出了什么问题吧…";
 			}
 		}
-	} *poems;
+
+		string stat() const { // 统计信息
+			return "目前共保存了" + to_string(v.size()) + "条信息";
+		}
+	} *poems, *monkey;
 
 	void init() {
 		poems = new collection("poems");
 		poems->load();
+
+		monkey = new collection("monkey");
+		monkey->load();
 	}
 }
 
@@ -78,7 +97,6 @@ using collections::collection;
 
 class collection_reply : virtual public checker_and_handler::custom_reply { // 收集回复，集成添加、加载、存档、查询功能
 
-public:
 protected:
 	collection *o;
 
@@ -107,24 +125,27 @@ public:
 		string s = e.message;
 		erase_pre(s);
 		if (start_with(s, "添加")) {
-			if (!is_authorized(u.user_id.value()))
-				return "抱歉，只有绿鸽鸽和ks才有这个权限哦~";
 			erase_pre(s, "添加");
 			erase_pre(s);
 			erase_suf(s);
 			return o->add(s);
 		}
+		else if (start_with(s, "删除")) {
+			erase_pre(s, "添加");
+			erase_pre(s);
+			erase_suf(s);
+			return o->erase(s);
+		}
 		else if (start_with(s, "加载")) {
-			if (!is_authorized(u.user_id.value()))
-				return "抱歉，只有绿鸽鸽和ks才有这个权限哦~";
 			erase_pre(s, "加载");
 			return o->load();
 		}
 		else if (start_with(s, "存档")) {
-			if (!is_authorized(u.user_id.value()))
-				return "抱歉，只有绿鸽鸽和ks才有这个权限哦~";
 			erase_pre(s, "存档");
 			return o->save();
+		}
+		else if (start_with(s, "统计")) {
+			return o->stat();
 		}
 		else if (s == "") // 查询
 			return o->get();

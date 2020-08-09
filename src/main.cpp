@@ -27,7 +27,7 @@ const int64_t self_id = 625938638, producer_id = 1094054222;
 // const set<int64_t> ENABLED_GROUPS = {441254450, 228725393, 780135491, 463471261, 301538258, 1047201693};
 const set<int64_t> DISABLED_GROUPS = {};
 const set<int64_t> NOTICE_GROUPS = {441254450, 228725393, 780135491, 1047201693};
-const set<int64_t> AUTHORIZED_USERS = {1094054222, 780768723}; // AntiLeaf, KsKun
+const set<int64_t> AUTHORIZED_USERS = {1094054222, 780768723, 2966286680}; // AntiLeaf, KsKun, Cyanoki
 bool is_authorized(int64_t user_id) {
 	return AUTHORIZED_USERS.count(user_id);
 }
@@ -41,8 +41,10 @@ bool is_authorized(int64_t user_id) {
 // #include "runcode.hpp"
 // #include "worm.hpp"
 // #include "uno.hpp"
-// #include "ban.hpp"
+#include "ban.hpp"
+#include "devine.hpp"
 #include "functions.hpp" // 必须包含
+#include "notice.hpp" // 必须包含
 
 auto send_message = message_tools::send_message;
 auto send_group_message = message_tools::send_group_message;
@@ -123,5 +125,12 @@ CQ_INIT {
 				}
 			}
 		}
+	});
+
+	on_notice([](const NoticeEvent &e) {
+		if (DISABLED_GROUPS.count(e.target.group_id.value()))
+			return;
+		handle_notice(e);
+		// e.block();
 	});
 }
